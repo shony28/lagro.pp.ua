@@ -566,6 +566,7 @@
             margin-top: 5px;
             box-sizing: border-box;
             border: 1px solid #ccc;
+            font-size: 18px;
         }
 
         .form-group input:focus,
@@ -941,9 +942,59 @@
         }
 
 
+        /* Стили для плавающей корзины */
+        .floating-cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
+        .floating-cart.visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
+        .floating-cart .header-top__icon-32-px-cart {
+            position: relative;
+        }
 
+        .floating-cart #cart-count {
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        #floating-cart-count {
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .header-top__logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            margin: 10px 0px 0px 10px;
+        }
 
 
     </style>
@@ -951,7 +1002,7 @@
 <body>
     <div class="header-top">
         <div class="header-top__logo" onclick="goToHome()">
-            <img class="header-top__logo2" src="logo.png" alt="Logo" />
+            <img class="header-top__logo2" alt="Logo" />
         </div>
         
         <!-- Бургер меню кнопка -->
@@ -994,6 +1045,14 @@
 
     </div>
 
+    <!-- Плавающая корзина -->
+    <div class="floating-cart" id="floating-cart">
+        <div class="header-top__icon-32-px-cart" onclick="toggleCart()">
+            <img class="header-top__cart-1" src="cart-10.svg" alt="Cart" />
+            <div id="floating-cart-count">0</div>
+        </div>
+    </div>
+
     <div id="products"></div>
 
     <div id="product-page" class="product-page">
@@ -1028,20 +1087,17 @@
             <div id="order-form">
                 <div class="form-group">
                     <label for="phone">Номер телефону</label>
-                    <input type="text" id="phone" placeholder="Введите номер телефона">
+                    <input type="tel" id="phone" placeholder="+380XXXXXXXXX" value="+38" maxlength="13">
                 </div>
                 <div class="form-group">
-                    <label for="city">Місто</label>
-                    <input type="text" id="city" placeholder="Введите ваш город">
+                    <label for="buyer">Ім'я</label>
+                    <input type="text" id="buyer" placeholder="Введіть ваше ім'я">
                 </div>
                 <div class="form-group">
-                    <label for="delivery">Служба доставки</label>
+                    <label for="delivery">Спосіб доставки</label>
                     <select id="delivery">
                         <option value="">Виберіть службу доставки</option>
-                        <option value="EMS">EMS</option>
-                        <option value="DHL">DHL</option>
-                        <option value="FedEx">FedEx</option>
-                        <option value="UPS">UPS</option>
+                        
                     </select>
                 </div>
                 <div class="order-summary">
@@ -1054,7 +1110,7 @@
         </div>
     </div>
     <script>
-        const SPREADSHEET_ID = '1a8iWHQI57_3Z3eGJWmysiCSM_PVrD98roIUofae0GoI'; // null для использования параметра или конкретный ID '1a8iWHQ...'
+        const SPREADSHEET_ID = '1a8iWHQI57_3Z3eGJWmysiCSM_PVrD98roIUofae0GoI'; // null для использования параметра или конкретный ID '1a8iWHQI57_3Z3eGJWmysiCSM_PVrD98roIUofae0GoI'
         const RANGE = 'goods!A2:E';
         const TELEGRAM_BOT_TOKEN = '6863026193:AAEt0ol4WSPSECRChSEDv_Dk6wzJqCyWa94';
         let TELEGRAM_CHAT_ID = '';
@@ -1411,6 +1467,8 @@
             document.getElementById('product-page').classList.remove('active');
         }
 
+        
+        
         // Применение настроек к интерфейсу
         function applySettings() {
             // Применение текста для кнопки добавления в корзину
@@ -1439,6 +1497,55 @@
                 }
                 
                 console.log('Застосовано цветову схему:', settingsData.styleColor);
+            }
+            
+            // Применение настроек для выпадающего списка доставки
+            if (settingsData.deliverySelect) {
+                const deliverySelect = document.getElementById('delivery');
+                if (deliverySelect) {
+                    // Очищаем текущие опции, кроме первой (placeholder)
+                    const firstOption = deliverySelect.querySelector('option[value=""]');
+                    deliverySelect.innerHTML = '';
+                    if (firstOption) {
+                        deliverySelect.appendChild(firstOption);
+                    } else {
+                        const placeholderOption = document.createElement('option');
+                        placeholderOption.value = '';
+                        placeholderOption.textContent = 'Виберіть службу доставки';
+                        deliverySelect.appendChild(placeholderOption);
+                    }
+                    
+                    // Разбиваем строку по символу ";" и создаем опции
+                    const deliveryOptions = settingsData.deliverySelect.split(';');
+                    deliveryOptions.forEach(optionText => {
+                        const trimmedText = optionText.trim();
+                        if (trimmedText) {
+                            const option = document.createElement('option');
+                            option.value = trimmedText;
+                            option.textContent = trimmedText;
+                            deliverySelect.appendChild(option);
+                        }
+                    });
+                    
+                    console.log('Застосовано налаштування доставки:', settingsData.deliverySelect);
+                }
+            }
+            
+            // Применение логотипа (изображение или текст)
+            const logoContainer = document.querySelector('.header-top__logo');
+            if (logoContainer) {
+                if (settingsData.logoUrl) {
+                    // Если есть URL логотипа, показываем изображение
+                    logoContainer.innerHTML = `<img class="header-top__logo2" src="${settingsData.logoUrl}" alt="Logo" />`;
+                    console.log('Застосовано URL логотипу:', settingsData.logoUrl);
+                } else if (settingsData.logoTitle) {
+                    // Если нет URL, но есть текст, показываем текст
+                    logoContainer.innerHTML = `<span class="header-top__logo-text">${settingsData.logoTitle}</span>`;
+                    console.log('Застосовано текст логотипу:', settingsData.logoTitle);
+                } else {
+                    // По умолчанию используем logo.png
+                    logoContainer.innerHTML = `<img class="header-top__logo2" src="logo.png" alt="Logo" />`;
+                }
             }
         }
 
@@ -1928,7 +2035,7 @@
             let totalQuantity = 0;
             let totalPrice = 0;
 
-            cart.forEach(item => {
+            cart.forEach((item, index) => {
                 const cartItemElement = document.createElement('div');
                 cartItemElement.className = 'cart-item';
                 cartItemElement.innerHTML = `
@@ -1947,6 +2054,14 @@
                 `;
                 cartContainer.appendChild(cartItemElement);
 
+                // Добавляем разделитель, если это не последний элемент
+                if (index < cart.length - 1) {
+                    const separator = document.createElement('div');
+                    separator.className = 'cart-separator';
+                    separator.style.cssText = 'height: 1px; background-color: #e0e0e0; margin: 10px 0;';
+                    cartContainer.appendChild(separator);
+                }
+
                 totalQuantity += item.quantity;
                 totalPrice += item.price * item.quantity;
             });
@@ -1954,6 +2069,9 @@
             totalPriceElement.innerText = totalPrice.toFixed(2);
             totalQuantityElement.innerText = totalQuantity;
             document.getElementById('cart-count').innerText = totalQuantity;
+            
+            // Обновляем плавающую корзину
+            updateFloatingCartCount();
         }
 
         function toggleCart() {
@@ -1963,7 +2081,7 @@
 
         function placeOrder() {
             const phone = document.getElementById('phone').value.trim();
-            const city = document.getElementById('city').value.trim();
+            const buyer = document.getElementById('buyer').value.trim();
             const delivery = document.getElementById('delivery').value.trim();
 
             if (cart.length === 0) {
@@ -1971,14 +2089,19 @@
                 return;
             }
 
-            if (!phone || !city || !delivery) {
-                alert("Пожалуйста, заполните все поля для оформления заказа.");
+            if (!phone || !buyer || !delivery) {
+                alert("Будь ласка, заповніть усі поля для оформлення замовлення.");
+                return;
+            }
+
+            if (!validatePhone(phone)) {
+                alert("Неправильний формат телефону! Введіть номер у форматі +380XXXXXXXXX (10 цифр після +38)");
                 return;
             }
 
             const orderDetails = cart.map(item => `${item.name} (${item.price} грн × ${item.quantity})`).join('\n');
             const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-            const message = `Ваше замовлення:\n${orderDetails}\n\nСума: ${totalPrice} грн\n\nКонтактна інформація:\nТелефон: ${phone}\nМісто: ${city}\nСлужба доставки: ${delivery}`;
+            const message = `Ваше замовлення:\n${orderDetails}\n\nСума: ${totalPrice} грн\n\nКонтактна інформація:\nТелефон: ${phone}\nІм'я : ${buyer}\nСпосіб доставки: ${delivery}`;
 
             const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
             fetch(telegramUrl, {
@@ -1994,12 +2117,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert('Заказ оформлен и отправлен в Telegram.');
+                    alert('Замовлення оформлено');
                     cart = [];
                     renderCart();
                     saveCart();
                     document.getElementById('phone').value = '';
-                    document.getElementById('city').value = '';
+                    document.getElementById('buyer').value = '';
                     document.getElementById('delivery').value = '';
                     toggleCart();
                 } else {
@@ -2026,40 +2149,49 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-                loadCart();
-                
-                // Сначала загружаем товары (checkHashAndShowProduct вызовется в fetchProducts)
-                fetchProducts();
-                
-                // Обработчик изменения хеша
-                window.addEventListener('hashchange', checkHashAndShowProduct);
-                
-                // Обработчик кнопки "Назад" браузера
-                window.addEventListener('popstate', function(event) {
-                    if (event.state && event.state.productId) {
+            loadCart();
+            fetchProducts();
+            initScrollTracking();
+            
+            // Добавить обработчики для поля телефона:
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                formatPhone(e.target);
+            });
+            phoneInput.addEventListener('keydown', handlePhoneKeydown);
+            phoneInput.addEventListener('click', handlePhoneClick);
+            phoneInput.addEventListener('focus', function(e) {
+                // При фокусе устанавливаем курсор после +38
+                setTimeout(() => {
+                    e.target.setSelectionRange(3, 3);
+                }, 0);
+            });
+            
+            window.addEventListener('hashchange', checkHashAndShowProduct);
+            
+            window.addEventListener('popstate', function(event) {
+                if (event.state && event.state.productId) {
+                    checkHashAndShowProduct();
+                } else {
+                    const hash = window.location.hash.substring(1);
+                    if (hash) {
                         checkHashAndShowProduct();
                     } else {
-                        // Проверяем хеш, возможно пользователь вручную изменил URL
-                        const hash = window.location.hash.substring(1);
-                        if (hash) {
-                            checkHashAndShowProduct();
-                        } else {
-                            showProductsList();
-                        }
+                        showProductsList();
                     }
-                });
-                
-                document.getElementById('search').addEventListener('input', function(e) {
-                    filterProducts();
-                });
-                
-                // Закрытие мобильного меню при клике вне его
-                document.addEventListener('click', function(e) {
-                    if (isMobileNavVisible && !e.target.closest('.mobile-nav') && !e.target.closest('.burger-menu')) {
-                        closeMobileNav();
-                    }
-                });
+                }
             });
+            
+            document.getElementById('search').addEventListener('input', function(e) {
+                filterProducts();
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (isMobileNavVisible && !e.target.closest('.mobile-nav') && !e.target.closest('.burger-menu')) {
+                    closeMobileNav();
+                }
+            });
+        });
 
       //  функцию для проверки хеша и показа товара
         function checkHashAndShowProduct() {
@@ -2105,10 +2237,112 @@
             showMainCategories();
         }
 
+        // Функция для обновления счетчика плавающей корзины
+        function updateFloatingCartCount() {
+            const floatingCartCount = document.getElementById('floating-cart-count');
+            const mainCartCount = document.getElementById('cart-count');
+            if (floatingCartCount && mainCartCount) {
+                floatingCartCount.textContent = mainCartCount.textContent;
+            }
+        }
+
+        // Функция для проверки видимости хедера
+        function checkHeaderVisibility() {
+            const header = document.querySelector('.header-top');
+            const floatingCart = document.getElementById('floating-cart');
+            
+            if (!header || !floatingCart) return;
+            
+            const headerRect = header.getBoundingClientRect();
+            const isHeaderVisible = headerRect.bottom > 0;
+            
+            if (isHeaderVisible) {
+                floatingCart.classList.remove('visible');
+            } else {
+                floatingCart.classList.add('visible');
+            }
+        }
+
+        // Инициализация отслеживания скролла
+        function initScrollTracking() {
+            let ticking = false;
+            
+            function handleScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        checkHeaderVisibility();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', checkHeaderVisibility);
+            
+            // Первоначальная проверка
+            checkHeaderVisibility();
+        }
+
+        function validatePhone(phone) {
+            const phoneRegex = /^\+38\d{10}$/;
+            return phoneRegex.test(phone) && phone.length === 13;
+        }
+
+        function formatPhone(input) {
+            let value = input.value;
+            
+            // Если пользователь пытается удалить +38, возвращаем его обратно
+            if (!value.startsWith('+38')) {
+                value = '+38';
+                input.value = value;
+                return;
+            }
+            
+            // Убираем все нечисловые символы после +38
+            let numbers = value.substring(3).replace(/\D/g, '');
+            
+            // Ограничиваем до 10 цифр
+            if (numbers.length > 10) {
+                numbers = numbers.substring(0, 10);
+            }
+            
+            input.value = '+38' + numbers;
+        }
+
+        function handlePhoneKeydown(e) {
+            const input = e.target;
+            const cursorPosition = input.selectionStart;
+            
+            // Запрещаем удаление +38
+            if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPosition <= 3) {
+                e.preventDefault();
+                input.setSelectionRange(3, 3);
+                return false;
+            }
+            
+            // При клике или фокусе устанавливаем курсор после +38, если он находится в начале
+            if (cursorPosition < 3) {
+                setTimeout(() => {
+                    input.setSelectionRange(3, 3);
+                }, 0);
+            }
+        }
+
+        function handlePhoneClick(e) {
+            const input = e.target;
+            const cursorPosition = input.selectionStart;
+            
+            // Если курсор находится в области +38, перемещаем его после
+            if (cursorPosition < 3) {
+                setTimeout(() => {
+                    input.setSelectionRange(3, 3);
+                }, 0);
+            }
+        }
 
     </script>
 </body>
 </html>
-
 
 
