@@ -746,6 +746,9 @@
         }
 
         @media (max-width: 480px) {
+            img {
+                max-width: 100%;
+            }
             .header-top {
                 padding: 8px 10px;
             }
@@ -1423,17 +1426,15 @@
             
             navigationContainer.innerHTML = `
                 <div class="header-top__home" onclick="goToHome()">Головна</div>
-                <div class="header-top__about">Про нас</div>
-                <div class="header-top__contact-us">Контакти</div>
+                
             `;
             
             // Обновляем мобильное меню по умолчанию
             const mobileNav = document.getElementById('mobile-nav');
             if (mobileNav) {
                 mobileNav.innerHTML = `
-                    <div class="mobile-nav-item" onclick="goToHome(); closeMobileNav()">Головна</div>
-                    <div class="mobile-nav-item" onclick="closeMobileNav()">Про нас</div>
-                    <div class="mobile-nav-item" onclick="closeMobileNav()">Контакти</div>
+                    <!-- Эта строка будет создана динамически через renderMobileNavigation() -->
+                    
                 `;
             }
         }
@@ -1986,6 +1987,11 @@
             mobileNav.classList.remove('active');
             overlay.classList.remove('active');
             burgerMenu.classList.remove('active');
+            
+            // Закрываем корзину если она открыта
+            if (isCartVisible) {
+                toggleCart();
+            }
         }
 
         function addToCart(id, name, price) {
