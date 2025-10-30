@@ -15,39 +15,19 @@
                 return;
             }
             
-            // Проверяем, является ли первый элемент spreadsheetId (40+ символов)
-            var isSpreadsheetId = parts[0] && /^[A-Za-z0-9_-]{40,}$/.test(parts[0]);
+            // Формат: /goodsId/359 или /categoryId/123 или /pageId/about
+            var params = new URLSearchParams();
             
-            if (isSpreadsheetId) {
-                // Старый формат с ID в URL: /spreadsheetId/goodsId/359
-                var params = new URLSearchParams();
-                params.set('id', decodeURIComponent(parts[0]));
-                
-                // Остальные параметры
-                for (var i = 1; i < parts.length; i += 2) {
-                    if (parts[i] && parts[i + 1]) {
-                        params.set(parts[i], decodeURIComponent(parts[i + 1]));
-                    }
+            // Все параметры парами
+            for (var i = 0; i < parts.length; i += 2) {
+                if (parts[i] && parts[i + 1]) {
+                    params.set(parts[i], decodeURIComponent(parts[i + 1]));
                 }
-                
-                var newUrl = '/shop.html?' + params.toString();
-                window.history.replaceState(null, null, newUrl);
-                window.location.replace(newUrl);
-            } else {
-                // Новый формат без ID: /goodsId/359
-                var params = new URLSearchParams();
-                
-                // Все параметры парами
-                for (var i = 0; i < parts.length; i += 2) {
-                    if (parts[i] && parts[i + 1]) {
-                        params.set(parts[i], decodeURIComponent(parts[i + 1]));
-                    }
-                }
-                
-                var newUrl = '/shop.html?' + params.toString();
-                window.history.replaceState(null, null, newUrl);
-                window.location.replace(newUrl);
             }
+            
+            var newUrl = '/shop.html?' + params.toString();
+            window.history.replaceState(null, null, newUrl);
+            window.location.replace(newUrl);
         })();
     </script>
 </head>
