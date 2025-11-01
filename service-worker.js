@@ -1,45 +1,45 @@
 const CACHE_NAME = 'Lagro-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/styles.css',  // Добавьте здесь пути ко всем вашим стилям и скриптам
-  '/script.js'    // Например, если ваш основной скрипт называется script.js
-];
 
-// Установка сервис-воркера и кэширование ресурсов
+// Установка сервис-воркера
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
-  );
+  console.log('Service Worker встановлено');
+  self.skipWaiting();
 });
 
-// Обработка запросов и возвращение кэшированных ресурсов
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
-  );
-});
-
-// Обновление сервис-воркера и удаление старого кэша
+// Активация сервис-воркера
 self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
+  console.log('Service Worker активовано');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
       );
     })
+  );
+  return self.clients.claim();
+});
+
+// Обработка запросов - сначала сеть, потом кэш
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Кэшируем успешные ответы
+        if (response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Если сеть недоступна, возвращаем из кэша
+        return caches.match(event.request);
+      })
   );
 });
