@@ -2828,10 +2828,16 @@
                     // Формируем сообщение для Telegram
                     let message = `Нове замовлення:\n${orderDetails}\n\n`;
 
-                    if (actualDeliveryCost > 0) {
-                        message += `${deliveryName}: ${actualDeliveryCost} грн\n`;
-                    } else if (deliveryData && deliveryData.value.includes(':')) {
-                        message += `${deliveryName}: 0 грн (Безкоштовно)\n`;
+                    // ИСПРАВЛЕНИЕ: Всегда добавляем информацию о доставке, если она выбрана
+                    if (deliveryName) {
+                        if (actualDeliveryCost > 0) {
+                            message += `${deliveryName}: ${actualDeliveryCost} грн\n`;
+                        } else if (deliveryData.value.includes(':')) {
+                            message += `${deliveryName}: 0 грн (Безкоштовно)\n`;
+                        } else {
+                            // Для доставок без стоимости (например "Самовивіз")
+                            message += `${deliveryName}\n`;
+                        }
                     }
 
                     const totalWithDelivery = totalPrice + actualDeliveryCost;
@@ -3230,7 +3236,6 @@
 
 </body>
 </html>
-
 
 
 
