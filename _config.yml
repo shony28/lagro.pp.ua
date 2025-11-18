@@ -1,9 +1,0 @@
-url: "https://lagro.pp.ua"
-baseurl: ""
-
-# Отключаем стандартную обработку для XML
-include:
-  - sitemap.xml
-
-# Настройки Jekyll
-markdown: kramdown
