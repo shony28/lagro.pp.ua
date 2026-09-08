@@ -1245,24 +1245,25 @@
         function updateURL(params) {
             const spreadsheetId = SPREADSHEET_ID || getParameterByName('id');
             
-            // Формируем новый красивый URL
-            let pathParts = [];
+            // Формируем URL с query-параметрами
+            const queryParams = new URLSearchParams();
             
             // Добавляем id ТОЛЬКО если он НЕ задан в SPREADSHEET_ID (т.е. берется из URL)
             if (!SPREADSHEET_ID && spreadsheetId) {
-                pathParts.push(encodeURIComponent(spreadsheetId));
+                queryParams.set('id', spreadsheetId);
             }
             
             // Добавляем другие параметры
             if (params.goodsId) {
-                pathParts.push('goodsId', encodeURIComponent(params.goodsId));
+                queryParams.set('goodsId', params.goodsId);
             } else if (params.categoryId) {
-                pathParts.push('categoryId', encodeURIComponent(params.categoryId));
+                queryParams.set('categoryId', params.categoryId);
             } else if (params.pageId) {
-                pathParts.push('pageId', encodeURIComponent(params.pageId));
+                queryParams.set('pageId', params.pageId);
             }
             
-            const newPath = '/' + pathParts.join('/');
+            const queryString = queryParams.toString();
+            const newPath = '/' + (queryString ? '?' + queryString : '');
             window.history.pushState({}, '', newPath);
         }
 
@@ -2255,7 +2256,7 @@
             const spreadsheetId = SPREADSHEET_ID || getParameterByName('id');
             let newPath = '/';
             if (!SPREADSHEET_ID && spreadsheetId) {
-                newPath += encodeURIComponent(spreadsheetId);
+                newPath += '?id=' + encodeURIComponent(spreadsheetId);
             }
             window.history.pushState({}, '', newPath);
             
@@ -2332,7 +2333,7 @@
                 
                 // Добавляем id ТОЛЬКО если он НЕ задан в SPREADSHEET_ID
                 if (!SPREADSHEET_ID && spreadsheetId) {
-                    newPath += encodeURIComponent(spreadsheetId);
+                    newPath += '?id=' + encodeURIComponent(spreadsheetId);
                 }
                 
                 window.history.pushState({}, '', newPath);
@@ -2485,7 +2486,7 @@
                     
                     // Добавляем id ТОЛЬКО если он НЕ задан в SPREADSHEET_ID
                     if (!SPREADSHEET_ID && spreadsheetId) {
-                        newPath += encodeURIComponent(spreadsheetId);
+                        newPath += '?id=' + encodeURIComponent(spreadsheetId);
                     }
                     
                     window.history.pushState({}, '', newPath);
@@ -2586,7 +2587,7 @@
                 
                 // Добавляем id ТОЛЬКО если он НЕ задан в SPREADSHEET_ID
                 if (!SPREADSHEET_ID && spreadsheetId) {
-                    newPath += encodeURIComponent(spreadsheetId);
+                    newPath += '?id=' + encodeURIComponent(spreadsheetId);
                 }
                 
                 window.history.pushState({}, '', newPath);
