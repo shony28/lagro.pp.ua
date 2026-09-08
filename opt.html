@@ -279,6 +279,27 @@
       background:rgba(255,255,255,.035)
     }
     .contact-card p{color:rgba(255,255,255,.68)}
+    .direct-contacts{display:grid;gap:12px;margin-top:24px}
+    .contact-action{
+      display:flex;align-items:center;gap:14px;
+      padding:16px;border-radius:17px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.07);
+      color:#fff;text-decoration:none;transition:.2s ease;
+    }
+    .contact-action:hover{background:rgba(255,255,255,.11);transform:translateY(-2px)}
+    .contact-action-icon{
+      width:48px;height:48px;flex:0 0 48px;border-radius:15px;
+      display:grid;place-items:center;background:var(--accent);color:var(--forest);
+    }
+    .contact-action-icon.telegram-icon{background:#229ED9;color:#fff}
+    .contact-action-icon svg{width:23px;height:23px}
+    .contact-action small{
+      display:block;color:rgba(255,255,255,.56);
+      font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em
+    }
+    .contact-action strong{display:block;font-size:1.08rem;margin-top:2px}
+    .direct-actions{margin-top:20px}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .field{display:grid;gap:7px}
     .field.full{grid-column:1/-1}
@@ -565,7 +586,7 @@
       <div class="reveal">
         <span class="eyebrow">Запит для оптового покупця</span>
         <h2>Отримайте актуальну пропозицію</h2>
-        <p class="lead">Залиште номер телефону та орієнтовну потребу. Ми зможемо предметно обговорити ціну, доступний обсяг, графік і логістику.</p>
+        <p class="lead">Для уточнення актуальної ціни, доступного обсягу, графіка та логістики — зателефонуйте або напишіть нам у Telegram.</p>
 
         <div class="offer-list">
           <div class="offer-item">
@@ -584,49 +605,40 @@
       </div>
 
       <div class="contact-card reveal">
-        <span class="eyebrow">Заявка</span>
-        <h2 style="font-size:2rem">Давайте обговоримо закупівлю</h2>
-        <p>Заповнення займає близько хвилини.</p>
+        <span class="eyebrow">Контакти</span>
+        <h2 style="font-size:2rem">Зв’яжіться з нами напряму</h2>
+        <p>З питань оптової закупівлі молока, актуальної ціни та умов поставки — телефонуйте або пишіть у Telegram.</p>
 
-        <form id="leadForm" novalidate>
-          <div class="form-grid">
-            <div class="field">
-              <label for="name">Ваше ім’я *</label>
-              <input id="name" name="name" autocomplete="name" placeholder="Олександр" required>
-            </div>
-            <div class="field">
-              <label for="company">Компанія</label>
-              <input id="company" name="company" autocomplete="organization" placeholder="Назва компанії">
-            </div>
-            <div class="field">
-              <label for="phone">Телефон *</label>
-              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380..." required>
-            </div>
-            <div class="field">
-              <label for="volume">Потреба в молоці</label>
-              <select id="volume" name="volume">
-                <option value="">Ще не визначились</option>
-                <option>до 300 л / день</option>
-                <option>300–500 л / день</option>
-                <option>500–1000 л / день</option>
-                <option>понад 1000 л / день</option>
-                <option>інший обсяг</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="comment">Коментар</label>
-              <textarea id="comment" name="comment" placeholder="Наприклад: потрібна регулярна закупівля 3 рази на тиждень..."></textarea>
-            </div>
-          </div>
+        <div class="direct-contacts">
+          <a class="contact-action" href="tel:+380976337448" aria-label="Зателефонувати +380 97 633 74 48">
+            <span class="contact-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                <path d="M6.6 2.8 9 2.3c.7-.1 1.4.3 1.7 1l1.2 3.1c.3.7.1 1.4-.5 1.9L9.8 9.6a13.5 13.5 0 0 0 4.6 4.6l1.3-1.6c.5-.6 1.2-.8 1.9-.5l3.1 1.2c.7.3 1.1 1 .9 1.7l-.5 2.4c-.2 1-1 1.8-2 2C10.8 20.8 3.2 13.2 4.6 4.9c.2-1 .9-1.9 2-2.1Z"/>
+              </svg>
+            </span>
+            <span>
+              <small>Телефон</small>
+              <strong>+380 97 633 74 48</strong>
+            </span>
+          </a>
 
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Надіслати запит</button>
-            <a class="btn btn-ghost" id="phoneBtn" href="#contact" hidden>Зателефонувати</a>
-            <a class="btn btn-ghost" id="telegramBtn" href="#" target="_blank" rel="noopener" hidden>Telegram</a>
-          </div>
-          <p class="form-note">Натискаючи «Надіслати запит», ви погоджуєтесь на використання наданих контактних даних для відповіді на звернення. <a href="#" id="privacyOpen">Політика конфіденційності</a>.</p>
-          <div class="status" id="formStatus" aria-live="polite"></div>
-        </form>
+          <a class="contact-action" href="https://t.me/viktorijaaaa2000" target="_blank" rel="noopener" aria-label="Написати в Telegram">
+            <span class="contact-action-icon telegram-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.7 3.4 2.8 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.2c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.2-2.1 4.6 3.4c.8.5 1.4.3 1.6-.8l2.8-13.3c.3-1.4-.5-2-1.1-1.5ZM8 12.9l9.8-6.2c.5-.3.9-.1.6.2l-8.1 7.3-.3 3.2-2-4.5Z"/>
+              </svg>
+            </span>
+            <span>
+              <small>Telegram</small>
+              <strong>@viktorijaaaa2000</strong>
+            </span>
+          </a>
+        </div>
+
+        <div class="form-actions direct-actions">
+          <a class="btn btn-primary" href="tel:+380976337448">Зателефонувати</a>
+          <a class="btn btn-ghost" href="https://t.me/viktorijaaaa2000" target="_blank" rel="noopener">Написати в Telegram</a>
+        </div>
       </div>
     </div>
   </section>
@@ -680,7 +692,7 @@
 </footer>
 
 <div class="floating">
-  <a class="float-btn float-telegram" id="floatTelegram" href="#" target="_blank" rel="noopener" aria-label="Написати в Telegram" hidden>
+  <a class="float-btn float-telegram" id="floatTelegram" href="https://t.me/viktorijaaaa2000" target="_blank" rel="noopener" aria-label="Написати в Telegram">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.7 3.4 2.8 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.2c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.2-2.1 4.6 3.4c.8.5 1.4.3 1.6-.8l2.8-13.3c.3-1.4-.5-2-1.1-1.5ZM8 12.9l9.8-6.2c.5-.3.9-.1.6.2l-8.1 7.3-.3 3.2-2-4.5Z"/></svg>
   </a>
   <a class="float-btn float-main" href="#contact" aria-label="Залишити заявку">
@@ -693,49 +705,17 @@
   <img id="lightboxImage" alt="">
 </div>
 
-<div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
-  <div class="modal-card">
-    <button class="modal-close" data-close-modal="messageModal" aria-label="Закрити">×</button>
-    <h3 id="messageTitle">Ваш запит підготовлено</h3>
-    <p id="messageHelp">Скопіюйте текст нижче та надішліть його зручним способом.</p>
-    <textarea id="messageText" readonly></textarea>
-    <div class="modal-actions">
-      <button class="btn btn-dark" id="copyMessage" type="button">Скопіювати текст</button>
-      <a class="btn btn-soft" id="modalTelegram" href="#" target="_blank" rel="noopener" hidden>Відкрити Telegram</a>
-      <a class="btn btn-soft" id="modalEmail" href="#" hidden>Написати e-mail</a>
-    </div>
-  </div>
-</div>
 
 <div class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
   <div class="modal-card">
     <button class="modal-close" data-close-modal="privacyModal" aria-label="Закрити">×</button>
     <h3 id="privacyTitle">Політика конфіденційності</h3>
-    <p>Контактні дані, які ви добровільно вказуєте у формі, використовуються виключно для опрацювання вашого звернення щодо оптової закупівлі молока та подальшої комунікації.</p>
+    <p>На цій сторінці немає форми збору персональних даних. Для зв’язку використовуються прямі посилання на телефон та Telegram.</p>
     <p>Перед запуском реклами замініть цей текст на юридично погоджену політику вашого господарства та додайте реквізити власника сайту.</p>
   </div>
 </div>
 
 <script>
-/*
-  ============================================================
-  ШВИДКЕ НАЛАШТУВАННЯ ПЕРЕД ПУБЛІКАЦІЄЮ НА GITHUB PAGES
-  1) Впишіть телефон, Telegram та e-mail нижче.
-  2) Для реального надсилання форми без власного сервера:
-     створіть форму на Formspree і вставте endpoint у formEndpoint.
-     Якщо endpoint порожній, сайт сформує текст заявки для копіювання.
-  3) За бажанням вставте GA4 Measurement ID у ga4Id.
-  ============================================================
-*/
-const SITE_CONFIG = {
-  phoneDisplay: "+380 97 633 74 48",
-  phoneHref: "+380 97 633 74 48",
-  telegramUsername: "https://t.me/viktorijaaaa2000",
-  email: "",
-  formEndpoint: "",
-  ga4Id: ""
-};
-
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 
@@ -759,30 +739,8 @@ $$(".nav-links a").forEach(a => a.addEventListener("click", () => {
   menuToggle.setAttribute("aria-expanded", "false");
 }));
 
-// Контакти
-const cleanPhone = SITE_CONFIG.phoneHref.replace(/[^\d+]/g, "");
-if (cleanPhone) {
-  $("#phoneBtn").hidden = false;
-  $("#phoneBtn").href = "tel:" + cleanPhone;
-  $("#phoneBtn").textContent = SITE_CONFIG.phoneDisplay || "Зателефонувати";
-}
-if (SITE_CONFIG.telegramUsername) {
-  const tg = SITE_CONFIG.telegramUsername.replace(/^@/, "");
-  const tgUrl = "https://t.me/" + encodeURIComponent(tg);
-  ["#telegramBtn", "#floatTelegram", "#modalTelegram"].forEach(id => {
-    const el = $(id);
-    el.hidden = false;
-    el.href = tgUrl;
-  });
-}
-if (SITE_CONFIG.email) {
-  $("#modalEmail").hidden = false;
-}
-
-// Рік
 $("#year").textContent = new Date().getFullYear();
 
-// Анімація появи
 const io = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -793,9 +751,9 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: .12 });
 $$(".reveal").forEach(el => io.observe(el));
 
-// Галерея / lightbox
 const lightbox = $("#lightbox");
 const lightboxImage = $("#lightboxImage");
+
 $$(".gallery-item img").forEach(img => {
   img.addEventListener("click", () => {
     lightboxImage.src = img.src;
@@ -804,149 +762,50 @@ $$(".gallery-item img").forEach(img => {
     document.body.style.overflow = "hidden";
   });
 });
+
 function closeLightbox() {
   lightbox.classList.remove("open");
   document.body.style.overflow = "";
 }
-$("#lightboxClose").addEventListener("click", closeLightbox);
-lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
 
-// Модальні вікна
+$("#lightboxClose").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
 function openModal(id) {
   $("#" + id).classList.add("open");
   document.body.style.overflow = "hidden";
 }
+
 function closeModal(id) {
   $("#" + id).classList.remove("open");
   document.body.style.overflow = "";
 }
-$$("[data-close-modal]").forEach(btn => btn.addEventListener("click", () => closeModal(btn.dataset.closeModal)));
-$$(".modal").forEach(modal => modal.addEventListener("click", e => {
-  if (e.target === modal) closeModal(modal.id);
-}));
-["#privacyOpen", "#privacyOpenFooter"].forEach(sel => {
-  $(sel).addEventListener("click", e => {
+
+$$("[data-close-modal]").forEach(btn => {
+  btn.addEventListener("click", () => closeModal(btn.dataset.closeModal));
+});
+
+$$(".modal").forEach(modal => {
+  modal.addEventListener("click", e => {
+    if (e.target === modal) closeModal(modal.id);
+  });
+});
+
+const privacyLink = $("#privacyOpenFooter");
+if (privacyLink) {
+  privacyLink.addEventListener("click", e => {
     e.preventDefault();
     openModal("privacyModal");
   });
-});
+}
 
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     closeLightbox();
     $$(".modal.open").forEach(m => closeModal(m.id));
   }
-});
-
-// UTM з реклами
-const params = new URLSearchParams(location.search);
-const attribution = {
-  utm_source: params.get("utm_source") || "",
-  utm_medium: params.get("utm_medium") || "",
-  utm_campaign: params.get("utm_campaign") || "",
-  utm_content: params.get("utm_content") || "",
-  utm_term: params.get("utm_term") || "",
-  landing_url: location.href,
-  referrer: document.referrer || ""
-};
-
-function buildMessage(data) {
-  return [
-    "Запит щодо оптової закупівлі молока",
-    "",
-    "Ім’я: " + (data.name || "—"),
-    "Компанія: " + (data.company || "—"),
-    "Телефон: " + (data.phone || "—"),
-    "Потреба: " + (data.volume || "не вказано"),
-    "Коментар: " + (data.comment || "—"),
-    "",
-    attribution.utm_source ? "UTM source: " + attribution.utm_source : "",
-    attribution.utm_campaign ? "UTM campaign: " + attribution.utm_campaign : ""
-  ].filter(Boolean).join("\n");
-}
-
-const leadForm = $("#leadForm");
-const formStatus = $("#formStatus");
-
-leadForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  formStatus.textContent = "";
-
-  if (!leadForm.reportValidity()) return;
-
-  const submitBtn = leadForm.querySelector('button[type="submit"]');
-  const formData = Object.fromEntries(new FormData(leadForm).entries());
-  const payload = { ...formData, ...attribution, created_at: new Date().toISOString() };
-
-  if (SITE_CONFIG.formEndpoint) {
-    try {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Надсилаємо...";
-      const res = await fetch(SITE_CONFIG.formEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) throw new Error("HTTP " + res.status);
-
-      formStatus.textContent = "Дякуємо! Запит надіслано.";
-      leadForm.reset();
-      trackEvent("lead_submit", { method: "form" });
-      return;
-    } catch (err) {
-      formStatus.textContent = "Не вдалося надіслати автоматично. Нижче можна скопіювати запит.";
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Надіслати запит";
-    }
-  }
-
-  const message = buildMessage(payload);
-  $("#messageText").value = message;
-
-  if (SITE_CONFIG.email) {
-    $("#modalEmail").href =
-      "mailto:" + encodeURIComponent(SITE_CONFIG.email) +
-      "?subject=" + encodeURIComponent("Оптова закупівля молока") +
-      "&body=" + encodeURIComponent(message);
-  }
-
-  openModal("messageModal");
-  trackEvent("lead_prepare", { method: "fallback" });
-});
-
-$("#copyMessage").addEventListener("click", async () => {
-  const text = $("#messageText").value;
-  try {
-    await navigator.clipboard.writeText(text);
-    $("#copyMessage").textContent = "Скопійовано ✓";
-    setTimeout(() => $("#copyMessage").textContent = "Скопіювати текст", 1600);
-  } catch {
-    $("#messageText").select();
-    document.execCommand("copy");
-  }
-});
-
-// Мінімальна аналітика: GA4 підключається тільки якщо вписаний ID
-function trackEvent(name, params = {}) {
-  if (typeof window.gtag === "function") window.gtag("event", name, params);
-}
-if (SITE_CONFIG.ga4Id) {
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(SITE_CONFIG.ga4Id);
-  document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ dataLayer.push(arguments); };
-  gtag("js", new Date());
-  gtag("config", SITE_CONFIG.ga4Id);
-}
-
-$$('a[href^="#"]').forEach(a => {
-  a.addEventListener("click", () => {
-    if (a.getAttribute("href") === "#contact") trackEvent("cta_click", { label: a.textContent.trim() });
-  });
 });
 </script>
 </body>
